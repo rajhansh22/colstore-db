@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../home/header.xhtml">
+            <ui:define name="content">
+                <h:outputText value="HELLO VIEW PAGE"/>
+                <h:form id="frm1">
+                    <p:dataTable id="dataView" value="#{colManagerBean.outputDataList}" var="output">
+                        <p:columns value="#{colManagerBean.reqNameCols}" var="column" sortBy="">
+                             <f:facet name="header">
+                                 <h:outputText value="#{column.toString}" />
+                             </f:facet>
+                            <h:outputText value="#{output[column.toString]}" />				       
+                        </p:columns>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+            <ui:define name="left">
+
+            </ui:define>
+
+
+        </ui:composition>
+
+    </body>
+</html>

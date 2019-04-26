@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+        <ui:composition template="./../home/header.xhtml">
+            <ui:define name="content">
+                <h:outputText value="#{colManagerBean.clearListData()}"/>
+                <h:form id="frm1">
+                    <p:accordionPanel id="ap1">
+                        <p:tab title="Read From Table">
+                            <table width="100%" align="left">
+                                <tr><td colspan="6" width="100%"><hr/></td></tr>
+                                <tr>
+
+                                    <td width="16%" align="right"> <p:outputLabel for="console" value="Database:" /></td>
+                                    <td width="16%"> 
+                                        <p:selectOneMenu id="console" value="#{colManagerBean.selectedDb.db_name}" style="width:125px">
+                                            <f:selectItem itemLabel="Select Database" itemValue="" />
+                                            <f:selectItems value="#{nodeService.dblist}" />
+                                        </p:selectOneMenu>
+                                        <p:commandButton value="select db" type="submit" action="#{colManagerBean.updateSelectedDb()}" update="tblname" />
+                                    </td>
+                                    
+                                    <td width="16%" align="right"> <h:outputLabel value="Table" for="tblname"/></td>
+                                    <td width="16%"> 
+                                        <p:selectOneMenu id="tblname" value="#{colManagerBean.selectedTable.tbl_name}" style="width:125px">
+                                            <f:selectItem itemLabel="Select Table" itemValue="" />
+                                            <f:selectItems value="#{nodeService.tbllist}" />
+                                        </p:selectOneMenu>
+                                        <p:commandButton value="select tb" type="submit" action="#{colManagerBean.updateSelectedTable()}" update="col1,menu" />
+                                    </td>
+                                    <td width="30%" align="right"> </td>
+                                    <td width="36%" align="right" colspan="2"> </td>
+                                </tr>
+                                <tr><td colspan="6" width="100%"><hr/></td></tr>
+                                <tr>
+                                    <td width="100%" colspan="2" align="center">
+                                        <p:dataTable id="col1" widgetVar="col1" var="col" value="#{colManagerBean.condColumnList}" editable="true" paginator="true" rows="10" rowKey="#{col.id}">
+                                            <f:facet name="header">
+                                                <p:commandButton value="select conditioned column" styleClass="ui-priority-primary" update="col1"
+                                                                 action="#{colManagerBean.onAddNewCond()}"/>  
+                                            </f:facet>
+                                            <!--p:column style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="Column Name" />
+                                                </f:facet>
+                                                <h:outputText value="#{col.col_name}" />
+                                            </p:column>
+                                            <p:column  style="alignment-adjust: middle;alignment-baseline: central;">
+                                                <f:facet name="header">
+                                                    <h:outputText value="DataType" />
+                                                </f:facet>
+                                                <h:outputText value="#{col.col_dataType}" />
+                                            </p:column-->
+                                            <p:ajax event="rowEdit" listener="#{colManagerBean.onRowEdit}"  />
+                                            <p:ajax event="rowEditCancel" listener="#{colManagerBean.onRowCancel}"  />
+
+                                            <p:column headerText="ConditionedCol Name">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{col.col_name}" /></f:facet>
+                                                    <f:facet name="input">
+                                                        <!--<h:selectOneMenu value="#{col.col_dataType}" style="width:100%">
+                                                            <f:selectItems value="#{tableManagerBean.dataTypeList}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                                                        </h:selectOneMenu>-->
+                                                        <p:selectOneMenu id="collist" value="#{col.col_name}" style="width:100%">
+                                                            <f:selectItems value="#{nodeService.collist}" />
+                                                        </p:selectOneMenu>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column headerText="ConditionedCol Val">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputText value="#{col.col_value}" /></f:facet>
+                                                    <f:facet name="input"><p:inputText value="#{col.col_value}" style="width:100%" label="Year"/></f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+                                            <p:column style="width:32px">
+                                                <p:rowEditor />
+                                            </p:column>
+                                        </p:dataTable>
+
+                                    </td>
+                                    <td width="30%"> </td>
+                                    <td>
+                                        <h:outputLabel for="menu" value="Required Cols:" />
+                                        <p:selectCheckboxMenu id="menu" value="#{colManagerBean.reqNameCols}" label="reqCols"
+                                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                                <f:selectItems value="#{nodeService.collist}" />
+                                        </p:selectCheckboxMenu>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="6" width="100%"><hr/></td></tr>
+                                <tr>
+
+                                    <td width="16%" align="right"> </td>
+                                    <td width="16%"> </td>
+                                    <td width="16%" align="right"> </td>
+                                    <td width="16%" ></td>
+                                    <td width="30%" align="right"> </td>
+                                    <td width="36%" align="right" colspan="2"> 
+                                        <p:commandButton value="Read Data" update="msgOut,col1,tblname,:left_menu_form:tmenu" process="@form"  actionListener="#{colManagerBean.readData()}" style="width:170px;">
+                                            
+                                        </p:commandButton>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100%" colspan="6"><h:outputText id="msgOut"  value="#{colManagerBean.msg}"/></td>
+                                </tr>
+                                <tr>
+                                    
+                                </tr>
+                            </table>       
+                        </p:tab>
+                        <p:tab title="View/Change Table Details">
+                        </p:tab>
+                    </p:accordionPanel>
+                </h:form>
+                <br/>
+                
+
+            </ui:define>
+            <ui:define name="left">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

@@ -120,13 +120,18 @@ public class ColManagerBean {
         System.out.println("Hello Read++++++++++++++++++++++++++++++++++");
         reqColumnList.clear();
         ColList cl;
+        if(reqNameCols.size()==0){
+            setMsg("No required cols selected");
+            return;
+        }
         for(String str:reqNameCols){
             cl = new ColList();
             cl.setCol_name(str);
             reqColumnList.add(cl);
         }
+        //System.out.println("Size of condList++++++++++++++++++++++++++++++++++"+this.getCondColumnList().size());
         //dbConn.logMsg(RLogger.MSG_TYPE_INFO, RLogger.LOGGING_LEVEL_INFO, "TableManagerBean.class :: createNew() :: Table-" + this.getSelectedDb().getDb_name() + " | " + this.getNewTable().getTbl_name());
-        if (this.getSelectedTable() != null && this.getSelectedTable() != null && this.getCondColumnList() != null && this.getReqColumnList() != null) {
+        if (this.getSelectedTable() != null && this.getSelectedTable() != null && this.getCondColumnList().size()>0 && this.getReqColumnList().size()>0) {
             //TableList temp = new TableList();
             
             fetchLoginDetails();
@@ -135,10 +140,8 @@ public class ColManagerBean {
             System.out.println("net.colstore.web.mbeans.ColManagerBean.readingData :: " + this.getColumnList().size());
             storageMgr.read();
 
-        } else {
-            //this.setMsg("Select Database");
-            //this.getNewTable().setTbl_name("");
-            //this.getColumnList().clear();
+        } else if(this.getCondColumnList().size()==0) {
+            storageMgr.showAll();
         }
         //colHead:reqNameCols colVal:outputDataList
         List<List<String>> datasOutput=new ArrayList<List<String>>();

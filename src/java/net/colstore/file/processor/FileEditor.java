@@ -6,6 +6,7 @@
 package net.colstore.file.processor;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -99,23 +100,24 @@ public class FileEditor {
          record.writeToFile(file);
    }
 
-   /*public void showAllRecords() {
-      List<String> allData=new ArrayList<String>();
-      DataType record = new DataType();
-      try {
-         file.seek(0);
-         while (true) {
-            do {
-               record.readFromFile(file);
-            } while (record.getId() == 0L);
-            //store all record in a list
-            allData.add("EVERY_DATA");
-            System.out.println(record.toString());
-         }
-      } catch (EOFException ex1) {
-         return;
-      } catch (IOException ex2) {
-         System.err.println("error reading file");
-      }
-   }*/
+    public List<String> showAllRecords() {
+        List<String> colValList = new ArrayList<>();
+        DataType record = new DataType();
+        try {
+            file.seek(0);
+            while (true) {
+               do {
+                  record.readFromFile(file);
+               } while (record.getData().trim().equals("$$$$$"));
+               //store all record in a list
+               colValList.add(record.getData());
+               //System.out.println(record.toString());
+            }
+        } catch (EOFException ex1) {
+           System.err.println("EOFException :"+ex1);
+        } catch (IOException ex2) {
+           System.err.println("error reading file :"+ex2);
+        }
+        return colValList;
+    }
 }

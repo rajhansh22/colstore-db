@@ -6,6 +6,7 @@
 package net.colstore.file.processor;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -143,8 +144,8 @@ public class IdManager {
         File folder = new File(db.getTableName());
         File[] listOfFiles = folder.listFiles();
         System.out.println("HELLO FROM RANDOM DEL++++++++++");
-        for(File file:listOfFiles){
-            String fName=file.getName();
+        for(File f:listOfFiles){
+            String fName=f.getName();
             String fileName=db.getTableName()+"/"+fName;
             System.out.println("PRINTING FILENAME++++++++++"+fileName);
             if (attrMap.containsKey(fName)){
@@ -164,6 +165,33 @@ public class IdManager {
             }
         }
     }
+    
+    public List<List<String>> showAllRecords() throws IOException {
+      FileEditor fe;
+      //DataType dt;
+      List<String> colValList;
+      List<List<String>> allData=new ArrayList<>();
+      SchemaParser sp = new SchemaParser();
+      String[] schemaH = db.getTableName().split("/");
+      String schema = schemaH[schemaH.length-1];
+      sp.parse(db.getTableName()+"/"+schema+"_schema.xml");//path of xml schema
+      HashMap<String,String> attrMap = sp.getColList();
+      File folder = new File(db.getTableName());
+      File[] listOfFiles = folder.listFiles();
+      for(File f:listOfFiles){
+          String fName=f.getName();
+          String fileName=db.getTableName()+"/"+fName;
+          if (attrMap.containsKey(fName)){
+            fe = new FileEditor(fileName);
+            colValList = fe.showAllRecords();
+            allData.add(colValList);
+          }
+          else{
+              System.out.println(fileName+" column doesn't exist");
+          }
+      }
+      return allData;
+   }
     
     Set<Long> getIds(List<String> colsScanned,List<String> valsScanned) throws FileNotFoundException, IOException{
         //List<Long> idList = new ArrayList<>();

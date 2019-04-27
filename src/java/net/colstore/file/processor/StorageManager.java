@@ -79,6 +79,27 @@ public class StorageManager {
             }
         }
     }
+    public void showAll() throws IOException{
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ColManagerBean colMgrBean = (ColManagerBean) facesContext.getApplication().createValueBinding("#{colManagerBean}").getValue(facesContext);
+        userName = dbBasePath+"/"+Integer.toString(colMgrBean.getUserId());
+        dbName = colMgrBean.getSelectedDb().getDb_name();
+        tableName = colMgrBean.getSelectedTable().getTbl_name();
+        db = new Database(userName,dbName,tableName);
+        //condCols = fetchCondList(colMgrBean.getCondColumnList());
+        //condColsVal = fetchValList(colMgrBean.getCondColumnList());
+        //reqCols = fetchCondList(colMgrBean.getReqColumnList());
+        //System.out.println("CHECKING SIZE:"+reqCols.size());
+        //=  db.readData(condCols, condColsVal, reqCols);
+        colMgrBean.setOutputDataList(db.readAll()); 
+        colMgrBean.clearListData();
+        for(List<String> l:colMgrBean.getOutputDataList()){
+            System.out.println("COLUMN VALUES:");
+            for(String s:l){
+                System.out.println(s);
+            }
+        }
+    }
     public void update() throws IOException{
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ColManagerBean colMgrBean = (ColManagerBean) facesContext.getApplication().createValueBinding("#{colManagerBean}").getValue(facesContext);

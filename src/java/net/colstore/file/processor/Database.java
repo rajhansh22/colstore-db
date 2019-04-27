@@ -214,5 +214,11 @@ public class Database {
         }
         else
             colMgrBean.setMsg("No Data deleted");
-    }        
+    }
+    public List<List<String>> readAll() throws IOException{
+        List<List<String>> dataList = new ArrayList<>();
+        IdManager idm = new IdManager(this);
+        dataList=idm.showAllRecords();
+        return dataList;
+    }
 }

@@ -10,7 +10,7 @@ package net.colstore.web.model;
  * @author nilesh
  */
 //select id,tbl_id,col_name,col_dataType,status,created_on,last_updated from tb_collist where tbl_id=1;
-public class ColList {
+public class ColList implements java.io.Serializable{
        private int id;
     private int tbl_id;
     private String col_name;

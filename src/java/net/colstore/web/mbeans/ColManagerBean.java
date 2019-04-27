@@ -96,6 +96,7 @@ public class ColManagerBean {
         reqColumnList.clear();
         condColumnValList.clear();
         reqColumnValList.clear();
+        //outputDataList.clear();
     }
     public void insertData() throws IOException{
         System.out.println("Hello inserData++++++++++++++++++++++++++++++++++");
@@ -140,6 +141,17 @@ public class ColManagerBean {
             //this.getColumnList().clear();
         }
         //colHead:reqNameCols colVal:outputDataList
+        List<List<String>> datasOutput=new ArrayList<List<String>>();
+        int n=outputDataList.get(0).size();
+        int m=outputDataList.size();
+        for(int i=0;i<n;i++){
+            List<String> strList=new ArrayList<String>();
+            for(int j=0;j<m;j++){
+                strList.add(outputDataList.get(j).get(i));
+            }
+            datasOutput.add(strList);
+        }
+        this.setOutputDataList(datasOutput);
         
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         context.redirect(context.getRequestContextPath()+"/faces/ui/config/output.xhtml");

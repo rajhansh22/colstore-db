@@ -52,7 +52,7 @@ public class FileEditor {
             //System.out.println("value of record :"+record.getData()+":"+record.getData().length());
             System.out.println("pointer after :"+file.getFilePointer());
             if(val.equals(dt.getData().trim())){
-                System.out.println("inside condition");
+                System.out.println("inside condition++++++++++");
                 idSet.add((file.getFilePointer())/dt.SIZE);
                 System.out.println("adding id :"+(file.getFilePointer())/dt.SIZE);
             }
@@ -94,11 +94,12 @@ public class FileEditor {
    public void deleteRecord(DataType record)
          throws IllegalArgumentException, IOException {
          file.seek((record.getId() - 1) * record.SIZE);
-         record = new DataType();
+         record = new DataType("$$$$$","STRING");
+         //System.out.println("deleting data::"+record.getData()+":"+record.SIZE);
          record.writeToFile(file);
    }
 
-   public void showAllRecords() {
+   /*public void showAllRecords() {
       List<String> allData=new ArrayList<String>();
       DataType record = new DataType();
       try {
@@ -116,5 +117,5 @@ public class FileEditor {
       } catch (IOException ex2) {
          System.err.println("error reading file");
       }
-   }
+   }*/
 }

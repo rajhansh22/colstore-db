@@ -15,7 +15,7 @@ import java.io.RandomAccessFile;
 public class DataType {
 
     private Long id;
-    private String dataType;
+    private String dataType="STRING";
     private int dataLen=15;
     private String data;
     //set size a/c to size of data type in database
@@ -47,30 +47,31 @@ public class DataType {
    public DataType() {
        calSize();
    }
+   /*
    public DataType(long id) {
       this.id=id;
       calSize();
-   }
+   }*/
    public DataType(long id,String dataType) {
       this.id=id;
       this.dataType=dataType;
       calSize();
    }
-   public DataType(String data) {
+   /*public DataType(String data) {
       this.data=data;
       calSize();
-  }
+  }*/
    public DataType(String data,String dataType) {
       this.data=data;
       this.dataType=dataType;
       calSize();
   }
-   public DataType(String data,Long id) {
+   /*public DataType(String data,Long id) {
       this.data=data;
       this.id=id;
       calSize();
       //set size of data type here
-   }
+   }*/
    
    public void setId(Long id){
        this.id=id;
@@ -96,11 +97,12 @@ public class DataType {
       throws IOException {
     String str=readString(file);//return it or set it somewhere
     this.data=str;
-    this.id=file.getFilePointer();
+    this.id=file.getFilePointer()/this.SIZE;
    }
 
    public void writeToFile(RandomAccessFile file)
       throws IOException {
+       //System.out.println("AREY KUNAL++++++++++++"+data);
     writeString(file,data);//pass the string to be printed or integer if its integer
    }
 
@@ -117,10 +119,12 @@ public class DataType {
       StringBuffer buffer = null;
       if (s != null)
          buffer = new StringBuffer(s);
-      else
+      else{
          buffer = new StringBuffer(15);
-         buffer.setLength(15);
-         file.writeChars(buffer.toString());
+         System.out.println("WRITING CHARS++++++++++++++++++++++++++++");
+      }
+      buffer.setLength(15);
+      file.writeChars(buffer.toString());
       }
 
 }

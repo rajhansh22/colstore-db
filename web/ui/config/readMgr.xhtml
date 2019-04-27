@@ -111,9 +111,15 @@
                                 <tr>
                                     <td width="100%" colspan="6"><h:outputText id="msgOut"  value="#{colManagerBean.msg}"/></td>
                                 </tr>
-                                <tr>
-                                    
-                                </tr>
+                                <!--<tr>
+                                    <h:form id="viewOutput">
+                                        <p:ajax event="" listener="#{colManagerBean.onRowCancel}"  />
+                                        <ui:repeat value="#{colManagerBean.outputDataList}" var="item">
+                                        <h:outputText value="#{item}" />
+                                        <br/>
+                                        </ui:repeat>   
+                                    </h:form>
+                                </tr>-->
                             </table>       
                         </p:tab>
                         <p:tab title="View/Change Table Details">

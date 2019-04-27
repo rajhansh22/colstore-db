@@ -102,6 +102,7 @@ public class StorageManager {
         db = new Database(userName,dbName,tableName);
         condCols = fetchCondList(colMgrBean.getCondColumnList());
         condColsVal = fetchValList(colMgrBean.getCondColumnList());
+        System.out.println("HELLO FROM DELETE OF STORAGEMGR++++++++++");
         db.deleteData(condCols, condColsVal);
         colMgrBean.clearListData();
     }

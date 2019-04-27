@@ -141,7 +141,7 @@ public class Database {
                 fr.close();
             }
             else
-                System.out.println(col.get(i)+"column name doesnt exist");
+                System.out.println(col.get(i)+" column name doesnt exist");
             //**modify code accordingly**/if any col name doesnt exist, dont write in any file
         }
     }
@@ -178,7 +178,8 @@ public class Database {
         
         
         //idm.updateVals(idList,reqCols,reqVals);
-        idm.updateValthroghRandomAccess(idList, reqCols, reqVals);
+        if(idList.size()>0)
+            idm.updateValthroghRandomAccess(idList, reqCols, reqVals);
     }
     void deleteData(List<String> colsScanned,List<String> valsScanned)throws IOException{
         //search in file and find id then delete
@@ -188,10 +189,12 @@ public class Database {
         //ids = idm.getIds(colsScanned, valsScanned);
         ids = idm.getIdthroughRandomAccess(colsScanned, valsScanned);
         List<Long> idList = new ArrayList<Long>(ids);
+        System.out.println("HELLO FROM DELETE OF DATBASE++++++++++SIZE IS"+idList.size());
         //for (Long x : ids)
         //    idList.add(x);
         
         //idm.deleteDatas(idList);
-        idm.deleteDataThroughRandomAccess(idList);
+        if(idList.size()>0)
+            idm.deleteDataThroughRandomAccess(idList);
     }        
 }

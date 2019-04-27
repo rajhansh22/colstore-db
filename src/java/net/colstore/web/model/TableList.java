@@ -11,7 +11,7 @@ package net.colstore.web.model;
  */
 
 //select id,db_id,tbl_name,status,no_of_col,created_on,last_update from db_tbllist where db_id=1;
-public class TableList {
+public class TableList implements java.io.Serializable{
      private int id;
     private int db_id;
     private String tbl_name;

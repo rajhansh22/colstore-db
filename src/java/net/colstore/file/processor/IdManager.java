@@ -89,7 +89,11 @@ public class IdManager {
                     //dt=fe.getRecord(id);
                     //dt.setDataType(attrMap.get(reqCol));
                     //fe.setDt(dt);
-                    colValList.add(dt.getData());
+                    String str="$$$$$";
+                    if(!str.equals(dt.getData().trim())){
+                        colValList.add(dt.getData());
+                        System.out.println("COLUMN DATA VALUE ADDED");
+                    }
                 }
                 dataList.add(colValList);
             }
@@ -130,6 +134,7 @@ public class IdManager {
         //get all files
         FileEditor fe;
         DataType dt;
+        System.out.println("HELLO FROM DELETE OF IDM++++++++++");
         SchemaParser sp = new SchemaParser();
         String[] schemaH = db.getTableName().split("/");
         String schema = schemaH[schemaH.length-1];
@@ -137,19 +142,24 @@ public class IdManager {
         HashMap<String,String> attrMap = sp.getColList();
         File folder = new File(db.getTableName());
         File[] listOfFiles = folder.listFiles();
+        System.out.println("HELLO FROM RANDOM DEL++++++++++");
         for(File file:listOfFiles){
             String fileName=file.getName();
+            System.out.println("PRINTING FILENAME++++++++++"+fileName);
             if (attrMap.containsKey(fileName)){
                 fe = new FileEditor(fileName);
+                dt = new DataType("ABCDEFGH",attrMap.get(fileName));
+                fe.setDt(dt);
                 for(Long id:idList){
-                    dt=new DataType(id,attrMap.get(fileName));
-                    //dt.setDataType(attrMap.get(fileName));
-                    fe.setDt(dt);
-                    fe.deleteRecord(dt);
+                    //dt=new DataType(id,attrMap.get(fileName));
+                    
+                    
+                    //fe.deleteRecord(dt);
+                    fe.insertRecord(dt, id);
                 }
             }
             else{
-                System.out.println(fileName+"column doesn't exist");
+                System.out.println(fileName+" column doesn't exist");
             }
         }
     }

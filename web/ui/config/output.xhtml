@@ -10,7 +10,7 @@
 
         <ui:composition template="./../home/header.xhtml">
             <ui:define name="content">
-                <h:outputText value="HELLO VIEW PAGE"/>
+                <!--<h:outputText value="READ OPERATION OUTPUT"/>
                 <h:form id="frm1">
                     <p:dataTable id="dataView" value="#{colManagerBean.outputDataList}" var="output">
                         <p:columns value="#{colManagerBean.reqNameCols}" var="column" sortBy="">
@@ -20,7 +20,18 @@
                             <h:outputText value="#{output[column.toString]}" />				       
                         </p:columns>
                     </p:dataTable>
+                </h:form>-->
+                <h:outputText value="#{colManagerBean.reqNameCols}" />
+                <br/>
+                <br/>
+                <h:form id="viewOutput">
+                    <ui:repeat value="#{colManagerBean.outputDataList}" var="item">
+                        <h:outputText value="#{item}" />
+                        <br/>
+                    </ui:repeat>   
                 </h:form>
+                <!--<p:commandButton value="Read Data" update="viewOutput,msgOut,col1,tblname,:left_menu_form:tmenu" process="@form"  actionListener="#{colManagerBean.readData()}" style="width:170px;"/>
+                -->
             </ui:define>
             <ui:define name="left">
 

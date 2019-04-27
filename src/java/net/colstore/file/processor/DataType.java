@@ -22,7 +22,7 @@ public class DataType {
     public int SIZE;
     void calSize(){
        
-       if(dataType.trim().equalsIgnoreCase("Integer")){
+       if(dataType.trim().equalsIgnoreCase("Integer") || dataType.trim().equalsIgnoreCase("Int")){
            SIZE=Integer.BYTES;
        }
        else if(dataType.trim().equalsIgnoreCase("Double")){
@@ -95,15 +95,23 @@ public class DataType {
    
    public void readFromFile(RandomAccessFile file)
       throws IOException {
-    String str=readString(file);//return it or set it somewhere
-    this.data=str;
-    this.id=file.getFilePointer()/this.SIZE;
+       if(dataType.trim().equals("INTEGER")){
+           //d=file.readInt();
+           setId(Long.valueOf(file.readInt()));
+       }
+       else{
+            String str=readString(file);//return it or set it somewhere
+            this.data=str;
+       }
+       this.id=file.getFilePointer()/this.SIZE;
    }
 
    public void writeToFile(RandomAccessFile file)
       throws IOException {
-       //System.out.println("AREY KUNAL++++++++++++"+data);
-    writeString(file,data);//pass the string to be printed or integer if its integer
+    if(dataType.trim().equals("INTEGER"))
+        file.writeInt(this.getId().intValue());
+    else
+        writeString(file,data);//pass the string to be printed or integer if its integer
    }
 
    private String readString(RandomAccessFile file)

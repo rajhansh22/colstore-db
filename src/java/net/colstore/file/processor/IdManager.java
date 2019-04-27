@@ -144,11 +144,12 @@ public class IdManager {
         File[] listOfFiles = folder.listFiles();
         System.out.println("HELLO FROM RANDOM DEL++++++++++");
         for(File file:listOfFiles){
-            String fileName=file.getName();
+            String fName=file.getName();
+            String fileName=db.getTableName()+"/"+fName;
             System.out.println("PRINTING FILENAME++++++++++"+fileName);
-            if (attrMap.containsKey(fileName)){
+            if (attrMap.containsKey(fName)){
                 fe = new FileEditor(fileName);
-                dt = new DataType("ABCDEFGH",attrMap.get(fileName));
+                dt = new DataType("$$$$$",attrMap.get(fName));
                 fe.setDt(dt);
                 for(Long id:idList){
                     //dt=new DataType(id,attrMap.get(fileName));

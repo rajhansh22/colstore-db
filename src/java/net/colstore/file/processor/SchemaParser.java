@@ -75,6 +75,7 @@ public class SchemaParser {
                Element eElement = (Element) nNode;
                String colName = eElement.getElementsByTagName("column:attribute_name").item(0).getTextContent();
                String colDataType = eElement.getElementsByTagName("column:dataType").item(0).getTextContent();
+               //String colDataSize = eElement.getElementsByTagName("column:dataSize").item(0).getTextContent();
                //Pair<String,String> attr = new Pair<String,String> (colName,colDataType);
                colList.put(colName,colDataType);
             }

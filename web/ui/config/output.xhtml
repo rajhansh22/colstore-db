@@ -21,9 +21,7 @@
                         </p:columns>
                     </p:dataTable>
                 </h:form>-->
-                <h:outputText value="#{colManagerBean.reqNameCols}" />
-                <br/>
-                <br/>
+                <h2><h:outputText value="#{colManagerBean.reqNameCols}" /></h2>
                 <h:form id="viewOutput">
                     <ui:repeat value="#{colManagerBean.outputDataList}" var="item">
                         <h:outputText value="#{item}" />

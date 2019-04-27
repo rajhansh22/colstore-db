@@ -28,6 +28,8 @@ public class Database {
     private String userId;
     private String dbName;
     private String tableName;
+    FacesContext facesContext;
+    ColManagerBean colMgrBean;
 
     public Database() {
     }
@@ -42,6 +44,8 @@ public class Database {
         this.userId = userId;
         this.dbName = userId+"/"+dbName;
         this.tableName = this.dbName+"/"+tableName;
+        facesContext = FacesContext.getCurrentInstance();
+        colMgrBean = (ColManagerBean) facesContext.getApplication().createValueBinding("#{colManagerBean}").getValue(facesContext);
     }
     
     public String getDbName() {
@@ -158,10 +162,16 @@ public class Database {
         //for (Long x : ids)
         //    idList.add(x);
         //System.out.println(idList.get(0));
-        if(ids.size()>0)
-            //return idm.getValues(idList, reqCols);
+        if(ids.size()>0){
+            colMgrBean.setMsg(idList.size()+" data found");
             return idm.getValuesthroughRandomAcess(idList, reqCols);
-        else return dataList;
+            
+        }
+        else{
+            colMgrBean.setMsg("No data found for given condition");
+            return dataList;
+            
+        }
         
         //return dataList;
     }
@@ -178,8 +188,12 @@ public class Database {
         
         
         //idm.updateVals(idList,reqCols,reqVals);
-        if(idList.size()>0)
+        if(idList.size()>0){
             idm.updateValthroghRandomAccess(idList, reqCols, reqVals);
+            colMgrBean.setMsg(idList.size()+" data updated usccessfully");
+        }
+        else
+            colMgrBean.setMsg("No data updated");
     }
     void deleteData(List<String> colsScanned,List<String> valsScanned)throws IOException{
         //search in file and find id then delete
@@ -189,12 +203,16 @@ public class Database {
         //ids = idm.getIds(colsScanned, valsScanned);
         ids = idm.getIdthroughRandomAccess(colsScanned, valsScanned);
         List<Long> idList = new ArrayList<Long>(ids);
-        System.out.println("HELLO FROM DELETE OF DATBASE++++++++++SIZE IS"+idList.size());
+        //System.out.println("HELLO FROM DELETE OF DATBASE++++++++++SIZE IS"+idList.size());
         //for (Long x : ids)
         //    idList.add(x);
         
         //idm.deleteDatas(idList);
-        if(idList.size()>0)
+        if(idList.size()>0){
             idm.deleteDataThroughRandomAccess(idList);
+            //colMgrBean.setMsg(idList.size()+" data deleted successfully");
+        }
+        else
+            colMgrBean.setMsg("No Data deleted");
     }        
 }

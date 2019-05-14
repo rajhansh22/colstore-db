@@ -65,6 +65,7 @@ public class TableManagerBean implements java.io.Serializable {
         dataTypeList = new ArrayList<>();
         dataTypeList.add("INT");
         dataTypeList.add("STRING");
+        dataTypeList.add("LONG");
         boolean loginStatus = fetchLoginDetails();
         this.setMsg("");
         createDbList();

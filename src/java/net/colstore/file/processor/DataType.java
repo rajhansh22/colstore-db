@@ -7,6 +7,8 @@ package net.colstore.file.processor;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import javax.faces.context.FacesContext;
+import net.colstore.web.mbeans.ColManagerBean;
 
 /**
  *
@@ -43,6 +45,7 @@ public class DataType {
        else{
            SIZE = Character.BYTES * 15;
        }
+       
     }
    public DataType() {
        calSize();
@@ -91,13 +94,15 @@ public class DataType {
     public void setDataType(String dataType){
         this.dataType=dataType;
     }
-    
+    public String getDataType(){
+        return dataType;
+    }
    
    public void readFromFile(RandomAccessFile file)
       throws IOException {
-       if(dataType.trim().equals("INTEGER")){
-           //d=file.readInt();
-           setId(Long.valueOf(file.readInt()));
+       if(dataType.trim().equals("INT")){
+           String str=String.valueOf(file.readInt());
+           this.data=str;
        }
        else{
             String str=readString(file);//return it or set it somewhere
@@ -106,13 +111,20 @@ public class DataType {
        this.id=file.getFilePointer()/this.SIZE;
    }
 
-   public void writeToFile(RandomAccessFile file)
-      throws IOException {
-    if(dataType.trim().equals("INTEGER"))
-        file.writeInt(this.getId().intValue());
-    else
-        writeString(file,data);//pass the string to be printed or integer if its integer
+   public void writeToFile(RandomAccessFile file) throws IOException {
+    try{
+        if(dataType.trim().equals("INT"))        
+            file.writeInt(Integer.parseInt(this.data));
+        else
+            writeString(file,this.data);//pass the string to be printed or integer if its integer
    }
+   catch (NumberFormatException ex1) {
+       FacesContext facesContext = FacesContext.getCurrentInstance();
+       ColManagerBean colMgrBean = (ColManagerBean) facesContext.getApplication().createValueBinding("#{colManagerBean}").getValue(facesContext);
+       colMgrBean.setMsg("Data Type problem");
+       System.err.println("NumberFormatException :"+ex1);
+    }
+}
 
    private String readString(RandomAccessFile file)
       throws IOException {

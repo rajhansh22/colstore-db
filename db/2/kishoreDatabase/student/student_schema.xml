@@ -6,16 +6,13 @@
 		<Name>kishoreDatabase</Name>
 	</DBDetails>
 	<table:Table_Details>
-		<table:name>employee2</table:name>
-		<column:Column_Details>
-			<column:attributes>
+		<table:name>student</table:name>
+		<column:Column_Details><column:attributes>
+				<column:attribute_name>admNo</column:attribute_name>	
+				<column:dataType>INT</column:dataType>		
+			</column:attributes><column:attributes>
 				<column:attribute_name>name</column:attribute_name>	
 				<column:dataType>STRING</column:dataType>		
-			</column:attributes>
-			<column:attributes>
-				<column:attribute_name>age</column:attribute_name>	
-				<column:dataType>INT</column:dataType>		
-			</column:attributes>
-		</column:Column_Details>
+			</column:attributes></column:Column_Details>
 	</table:Table_Details>
 </ColstoreDB>

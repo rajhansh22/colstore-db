@@ -21,16 +21,26 @@ import java.util.Set;
 public class FileEditor {
    RandomAccessFile file;
    DataType dt;
+   Set<Long> idSet;
 
    public FileEditor(String fileString)
          throws IOException {
       file = new RandomAccessFile(fileString, "rw");
+      Set<Long> idSet=new HashSet<Long>();
    }
 
     public void setDt(DataType dt) {
         this.dt = dt;
     }
-   
+
+    public Set<Long> getIdSet() {
+        return idSet;
+    }
+
+    public void setIdSet(Set<Long> idSet) {
+        this.idSet = idSet;
+    }
+    
    
    public void close() throws IOException {
       if (file != null)
@@ -69,6 +79,19 @@ public class FileEditor {
        return idSet;
    }
    
+   public Set<Long> getIdsFromSubset(Set<Long> idS,String val) throws IOException{
+       Set<Long> idSet=new HashSet<Long>();
+       FileEditor fe;
+       
+       for(Long l:idS){
+           dt.setId(l);
+           dt.readFromFile(file);
+           if(val.equals(dt.getData().trim()))
+                idSet.add(dt.getId());
+       }
+       return idSet;
+   }
+   
    public DataType getRecord() throws IOException {
        Long id=dt.getId();
       //DataType record = new DataType();
@@ -102,15 +125,15 @@ public class FileEditor {
 
     public List<String> showAllRecords() {
         List<String> colValList = new ArrayList<>();
-        DataType record = new DataType();
+        //DataType record = new DataType();
         try {
             file.seek(0);
             while (true) {
                do {
-                  record.readFromFile(file);
-               } while (record.getData().trim().equals("$$$$$"));
+                  dt.readFromFile(file);
+               } while (dt.getData().trim().equals("$$$$$") || dt.getData().trim().equals("-100"));
                //store all record in a list
-               colValList.add(record.getData());
+               colValList.add(dt.getData());
                //System.out.println(record.toString());
             }
         } catch (EOFException ex1) {

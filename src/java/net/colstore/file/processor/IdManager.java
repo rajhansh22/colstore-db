@@ -58,13 +58,16 @@ public class IdManager {
                 fe=new FileEditor(fileName);
                 dt = new DataType("",attrMap.get(colsScanned.get(i)));
                 fe.setDt(dt);
-                Set<Long> colIds = fe.getIds(valsScanned.get(i));
-                idList.removeAll(colIds);
+                //Set<Long> colIds = fe.getIds(valsScanned.get(i));
+                Set<Long> colList = fe.getIdsFromSubset(idList,valsScanned.get(i));
+                idList=colList;
+                //idList.removeAll(colIds);
             }
             else{
                 System.out.println(valsScanned.get(i)+"column doesn't exist");
             }
         }
+        
         
         return idList;
     }
@@ -150,12 +153,15 @@ public class IdManager {
             System.out.println("PRINTING FILENAME++++++++++"+fileName);
             if (attrMap.containsKey(fName)){
                 fe = new FileEditor(fileName);
-                dt = new DataType("$$$$$",attrMap.get(fName));
+                if(attrMap.get(fName).equals("INT"))
+                    dt = new DataType("-100",attrMap.get(fName));
+                else
+                    dt = new DataType("$$$$$",attrMap.get(fName));
                 fe.setDt(dt);
                 for(Long id:idList){
                     //dt=new DataType(id,attrMap.get(fileName));
                     
-                    
+                    System.out.println("====================++++++idm::data type"+dt.getDataType()+":"+dt.getData());
                     //fe.deleteRecord(dt);
                     fe.insertRecord(dt, id);
                 }
@@ -168,7 +174,7 @@ public class IdManager {
     
     public List<List<String>> showAllRecords() throws IOException {
       FileEditor fe;
-      //DataType dt;
+      DataType dt;
       List<String> colValList;
       List<List<String>> allData=new ArrayList<>();
       SchemaParser sp = new SchemaParser();
@@ -183,6 +189,11 @@ public class IdManager {
           String fileName=db.getTableName()+"/"+fName;
           if (attrMap.containsKey(fName)){
             fe = new FileEditor(fileName);
+            if(attrMap.get(fName)=="INT")
+                    dt = new DataType("-100",attrMap.get(fName));
+                else
+                    dt = new DataType("$$$$$",attrMap.get(fName));
+            fe.setDt(dt);
             colValList = fe.showAllRecords();
             allData.add(colValList);
           }

@@ -118,6 +118,7 @@ public class Database {
                     String fileName=this.getTableName()+"/"+colList.get(i);
                     fe = new FileEditor(fileName);
                     //dt = new DataType(valueList.get(i));//id as para of constructor
+                    
                     dt = new DataType(valueList.get(i),attrMap.get(colList.get(i)));
 
                     //dt.setDataType(attrMap.get(colList.get(i)));

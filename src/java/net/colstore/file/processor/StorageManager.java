@@ -7,6 +7,7 @@ package net.colstore.file.processor;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import net.colstore.util.NUtil;
@@ -40,10 +41,21 @@ public class StorageManager {
     }
     public List<String> fetchValList(List<ColList> clList){
         List<String> lst = new ArrayList<String>();
+        /*SchemaParser sp = new SchemaParser();
+        String[] schemaH = tableName.split("/");
+        String schema = schemaH[schemaH.length-1];
+        sp.parse(tableName+"/"+schema+"_schema.xml");//path of xml schema
+        HashMap<String,String> attrMap = sp.getColList();
+        ArrayList lst;
+        lst = typecastedList("hello");*/
         for(ColList cl: clList){
             lst.add(cl.getCol_value());
         }
         return lst;
+    }
+    public <T> ArrayList<T> typecastedList(T element){
+        ArrayList<T> tList = new ArrayList<>();
+        return tList;
     }
     public void insert() throws IOException{
         System.out.println("Inside sm:insert++++++++++++++++++++++++++++++++++");
@@ -72,8 +84,9 @@ public class StorageManager {
         //=  db.readData(condCols, condColsVal, reqCols);
         colMgrBean.setOutputDataList(db.readData(condCols, condColsVal, reqCols)); 
         colMgrBean.clearListData();
+        System.out.println("===================================OUTPUT VALUES:"+colMgrBean.getOutputDataList().size());
         for(List<String> l:colMgrBean.getOutputDataList()){
-            System.out.println("COLUMN VALUES:");
+            System.out.println("COLUMN VALUES:"+l.size());
             for(String s:l){
                 System.out.println(s);
             }
@@ -93,8 +106,9 @@ public class StorageManager {
         //=  db.readData(condCols, condColsVal, reqCols);
         colMgrBean.setOutputDataList(db.readAll()); 
         colMgrBean.clearListData();
+        System.out.println("===================================OUTPUT VALUES:"+colMgrBean.getOutputDataList().size());
         for(List<String> l:colMgrBean.getOutputDataList()){
-            System.out.println("COLUMN VALUES:");
+            System.out.println("COLUMN VALUES:"+l.size());
             for(String s:l){
                 System.out.println(s);
             }
